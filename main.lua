@@ -2,7 +2,7 @@
 local url = "https://api.jnkie.com/api/v1/luascripts/public/4938b313f7382a02dcfb486362c97b4f20ae96e67a6e4d12ed91e488522e02ba/download"
 local env = getgenv and getgenv() or _G
 local current = env.FoxAutoSettings
-if current and not current.Dead and current.Initialized then return current.StrategyLibrary end
+if current and not current.Dead and current.StrategyLibrary and (current.Initialized or shared.TDSTable == current.StrategyLibrary) then return current.StrategyLibrary end
 local pending = env.ShameHubPublicLoader
 if pending and pending.Loading then
     local deadline = os.clock() + 180
@@ -19,7 +19,7 @@ local ok, result = xpcall(function()
         local deadline = os.clock() + 180
         repeat
             local window = env.FoxAutoSettings
-            if window and not window.Dead and window.Initialized then return window.StrategyLibrary end
+            if window and not window.Dead and window.StrategyLibrary and (window.Initialized or shared.TDSTable == window.StrategyLibrary) then return window.StrategyLibrary end
             task.wait(0.1)
         until os.clock() >= deadline
         error("ShameHub did not initialize; update the Jnkie source")
